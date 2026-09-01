@@ -1,1 +1,9 @@
+[[block]]
+title = "Home"
+url = "/landing"
+subpages = []
 
+[[block]]
+title = "About"
+url = "/about"
+subpages = []
