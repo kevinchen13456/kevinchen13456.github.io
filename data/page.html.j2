@@ -1,1 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{{ page.get('title', 'Untitled') }}</title>
+</head>
+<body>
+  <nav>
+    {% for link in nav_links %}
+      <a href="{{ link.url }}"{% if link.get('indent') %} style="margin-left: 1em;"{% endif %}>{{ link.title }}</a>
+    {% endfor %}
+  </nav>
 
+  <main>
+    {{ content }}
+  </main>
+</body>
+</html>
