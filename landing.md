@@ -1,1 +1,21 @@
-As indicated in the GitHub and in accordance with OpenCourseWare, these notes are under CC BY-NC-SA 4.0. For example, if you're an instructor teaching a multivariable calculus class, you are welcome to use these notes for your course however is helpful to you with attribution; you don't need additional written permission from me. (Although I do appreciate hearing about what other schools are reading these notes 😉)
+---
+title: ⛵IS
+description: April Fool's gag 2023.
+---
+
+Congratulations on finding this page!
+Here's a joke as a prize.
+
+## Question
+
+Why are cartographers scared of the 2018 shortlist?
+
+## Answer
+
+The seven C's. (After all, they're geo mains!)
+
+---
+
+If you're in OTIS, you can redeem the reward:
+
+`2023 B0A715 C1C2C3C4C5C6C7`
