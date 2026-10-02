@@ -1,1 +1,241 @@
-<!DOCTYPE html> <html> <head><title>My Site</title></head> <body><h1>Hello, world!</h1></body> </html>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Task list (plain JavaScript)</title>
+<style>
+:root {
+  box-sizing: border-box;
+  padding-top: env(safe-area-inset-top, 0px);
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+  --bg: #eaf0f6; --panel: #ffffff; --ink: #17263c; --muted: #66758a;
+  --line: #d3dce7; --accent: #0e7c86; --accent-ink: #ffffff; --code: #f2f6fa;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #0f1722; --panel: #172233; --ink: #e6edf5; --muted: #8fa0b5;
+    --line: #2a3a50; --accent: #3cc3cd; --accent-ink: #0b1a22; --code: #0f1722;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #0f1722; --panel: #172233; --ink: #e6edf5; --muted: #8fa0b5;
+  --line: #2a3a50; --accent: #3cc3cd; --accent-ink: #0b1a22; --code: #0f1722;
+}
+html { scroll-padding-top: env(safe-area-inset-top, 0px); }
+*, *::before, *::after { box-sizing: inherit; }
+body {
+  margin: 0; background: var(--bg); color: var(--ink);
+  font: 16px/1.5 "Avenir Next", "Segoe UI", system-ui, sans-serif;
+}
+main { max-width: 34rem; margin: 0 auto; padding: 2rem 1rem 3rem; }
+h1 { font-size: 2rem; margin: 0 0 .25rem; letter-spacing: -.02em; }
+.sub { color: var(--muted); margin: 0 0 1.5rem; max-width: 60ch; }
+.panel { background: var(--panel); border: 1px solid var(--line); border-radius: 12px; padding: 1rem; }
+form { display: flex; gap: .5rem; }
+input[type=text] {
+  flex: 1; min-width: 0; font: inherit; color: inherit; background: var(--bg);
+  border: 1px solid var(--line); border-radius: 8px; padding: .6rem .75rem;
+}
+button { font: inherit; cursor: pointer; border-radius: 8px; border: 1px solid var(--line); background: transparent; color: var(--ink); padding: .5rem .8rem; }
+button.primary { background: var(--accent); color: var(--accent-ink); border-color: var(--accent); font-weight: 600; }
+:focus-visible { outline: 3px solid var(--accent); outline-offset: 2px; }
+.filters { display: flex; gap: .4rem; margin: 1rem 0 .25rem; }
+.filters button[aria-pressed=true] { background: var(--ink); color: var(--panel); border-color: var(--ink); }
+ul { list-style: none; margin: 0; padding: 0; }
+li { display: flex; align-items: center; gap: .75rem; padding: .65rem 0; border-bottom: 1px solid var(--line); }
+li:last-child { border-bottom: 0; }
+li label { flex: 1; cursor: pointer; overflow-wrap: anywhere; }
+li.done label { color: var(--muted); text-decoration: line-through; }
+input[type=checkbox] { width: 1.15rem; height: 1.15rem; accent-color: var(--accent); }
+.del { color: var(--muted); padding: .2rem .55rem; }
+.empty { color: var(--muted); padding: 1rem 0 .5rem; }
+.foot { display: flex; justify-content: space-between; align-items: center; color: var(--muted); font-size: .9rem; margin-top: .5rem; }
+h2 { font-size: 1.05rem; margin: 2rem 0 .5rem; }
+.note { color: var(--muted); font-size: .92rem; margin: 0 0 .75rem; max-width: 60ch; }
+html { scroll-behavior: smooth; }
+@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+.site-header { background: var(--panel); border-bottom: 1px solid var(--line); position: sticky; top: env(safe-area-inset-top, 0px); z-index: 5; }
+.bar { max-width: 34rem; margin: 0 auto; padding: .7rem 1rem; display: flex; justify-content: space-between; align-items: center; gap: 1rem; flex-wrap: wrap; }
+.brand { font-weight: 700; color: var(--ink); text-decoration: none; letter-spacing: -.01em; }
+nav { display: flex; gap: 1.1rem; }
+nav a { color: var(--muted); text-decoration: none; font-size: .95rem; }
+nav a:hover { color: var(--accent); }
+.panel { box-shadow: 0 8px 24px rgba(23, 38, 60, .10); border-radius: 16px; padding: 1.25rem; }
+button { transition: background .15s, border-color .15s; }
+button:hover { border-color: var(--accent); }
+button.primary:hover { filter: brightness(1.08); }
+.filters button { border-radius: 999px; padding: .3rem .9rem; font-size: .9rem; }
+input[type=checkbox] {
+  appearance: none; -webkit-appearance: none; width: 1.3rem; height: 1.3rem; flex: none;
+  border: 2px solid var(--line); border-radius: 50%; background: var(--panel); cursor: pointer;
+  display: grid; place-content: center; transition: background .15s, border-color .15s;
+}
+input[type=checkbox]::after { content: ""; width: .35rem; height: .65rem; border: solid var(--accent-ink); border-width: 0 2px 2px 0; transform: rotate(45deg) translate(-1px, -1px); opacity: 0; }
+input[type=checkbox]:checked { background: var(--accent); border-color: var(--accent); }
+input[type=checkbox]:checked::after { opacity: 1; }
+li:hover { background: var(--code); }
+.site-footer { max-width: 34rem; margin: 0 auto; padding: 1.5rem 1rem 2.5rem; border-top: 1px solid var(--line); color: var(--muted); font-size: .9rem; }
+.site-footer p { margin: 0 0 .5rem; max-width: 60ch; }
+pre {
+  margin: 0; padding: .9rem; background: var(--code); border: 1px solid var(--line);
+  border-radius: 8px; overflow-x: auto; font: .82rem/1.45 ui-monospace, Menlo, Consolas, monospace;
+}
+</style>
+</head>
+<body>
+<header class="site-header">
+  <div class="bar">
+    <a class="brand" href="#top">Plain JS Demo</a>
+    <nav aria-label="Page sections">
+      <a href="#tasks">Tasks</a>
+      <a href="#how">How it works</a>
+      <a href="#about">About</a>
+    </nav>
+  </div>
+</header>
+<main id="top">
+  <h1>Today</h1>
+  <p class="sub">A task list built with plain HTML, CSS and JavaScript. No React, no build step, one file you could drop straight into GitHub Pages.</p>
+
+  <section class="panel" id="tasks" aria-label="Task list">
+    <form id="add-form">
+      <input type="text" id="new-task" placeholder="Add a task" aria-label="New task" autocomplete="off" required>
+      <button class="primary" type="submit">Add task</button>
+    </form>
+
+    <div class="filters" role="group" aria-label="Filter tasks">
+      <button data-filter="all" aria-pressed="true">All</button>
+      <button data-filter="active" aria-pressed="false">To do</button>
+      <button data-filter="done" aria-pressed="false">Done</button>
+    </div>
+
+    <ul id="list"></ul>
+
+    <div class="foot">
+      <span id="count"></span>
+      <button id="clear">Clear done</button>
+    </div>
+  </section>
+
+  <h2 id="how">The state behind the screen</h2>
+  <p class="note">Every change updates this array, then <code>render()</code> redraws the list from it. Try adding or checking a task.</p>
+  <pre id="state"></pre>
+</main>
+<footer class="site-footer" id="about">
+  <p><strong>About this page.</strong> It is one HTML file with inline CSS and JavaScript, so it can be hosted anywhere that serves static files, including GitHub Pages.</p>
+  <p>Your tasks are stored in this browser only.</p>
+</footer>
+
+<script>
+// 1. State: the single source of truth
+let tasks = [];
+let filter = "all";
+
+// Load saved tasks (storage can fail or be empty, so guard it)
+try {
+  const saved = JSON.parse(localStorage.getItem("tasks"));
+  if (Array.isArray(saved)) tasks = saved;
+} catch (e) {}
+if (!tasks.length) {
+  tasks = [
+    { id: 1, text: "Open this page's source code", done: true },
+    { id: 2, text: "Add a task of your own", done: false },
+    { id: 3, text: "Publish a site on GitHub Pages", done: false }
+  ];
+}
+
+const $ = (id) => document.getElementById(id);
+
+function save() {
+  try { localStorage.setItem("tasks", JSON.stringify(tasks)); } catch (e) {}
+}
+
+// 2. Render: build the DOM from the state
+function render() {
+  const visible = tasks.filter(t =>
+    filter === "all" || (filter === "done" ? t.done : !t.done));
+
+  const list = $("list");
+  list.innerHTML = "";
+
+  if (!visible.length) {
+    const p = document.createElement("li");
+    p.className = "empty";
+    p.textContent = tasks.length ? "Nothing in this view." : "No tasks yet. Add one above.";
+    list.appendChild(p);
+  }
+
+  visible.forEach(t => {
+    const li = document.createElement("li");
+    li.className = t.done ? "done" : "";
+    li.dataset.id = t.id;
+
+    const box = document.createElement("input");
+    box.type = "checkbox";
+    box.checked = t.done;
+    box.id = "t" + t.id;
+
+    const label = document.createElement("label");
+    label.htmlFor = box.id;
+    label.textContent = t.text; // textContent keeps user input safe
+
+    const del = document.createElement("button");
+    del.className = "del";
+    del.textContent = "Delete";
+    del.setAttribute("aria-label", "Delete " + t.text);
+
+    li.append(box, label, del);
+    list.appendChild(li);
+  });
+
+  const left = tasks.filter(t => !t.done).length;
+  $("count").textContent = left + (left === 1 ? " task left" : " tasks left");
+  $("state").textContent = JSON.stringify(tasks, null, 2);
+
+  document.querySelectorAll(".filters button").forEach(b =>
+    b.setAttribute("aria-pressed", b.dataset.filter === filter));
+}
+
+// 3. Events: change the state, then render again
+$("add-form").addEventListener("submit", (e) => {
+  e.preventDefault();
+  const input = $("new-task");
+  const text = input.value.trim();
+  if (!text) return;
+  tasks.push({ id: Date.now(), text, done: false });
+  input.value = "";
+  save(); render();
+});
+
+// Event delegation: one listener handles every row
+$("list").addEventListener("click", (e) => {
+  const li = e.target.closest("li[data-id]");
+  if (!li) return;
+  const id = Number(li.dataset.id);
+  if (e.target.matches(".del")) {
+    tasks = tasks.filter(t => t.id !== id);
+  } else if (e.target.matches("input[type=checkbox]")) {
+    const t = tasks.find(t => t.id === id);
+    t.done = e.target.checked;
+  } else {
+    return;
+  }
+  save(); render();
+});
+
+document.querySelector(".filters").addEventListener("click", (e) => {
+  if (!e.target.dataset.filter) return;
+  filter = e.target.dataset.filter;
+  render();
+});
+
+$("clear").addEventListener("click", () => {
+  tasks = tasks.filter(t => !t.done);
+  save(); render();
+});
+
+render();
+</script>
+</body>
+</html>
