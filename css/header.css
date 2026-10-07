@@ -1,6 +1,7 @@
 .site-header {
   background: var(--header-bg);
   color: var(--header-text);
+  border-bottom: 1px solid var(--header-line);
 }
 
 .header-inner {
