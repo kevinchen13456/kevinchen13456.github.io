@@ -63,10 +63,6 @@ body {
   color: var(--accent);
 }
 
-.nav-list a[aria-current="page"] {
-  box-shadow: inset 0 -3px 0 var(--accent);
-}
-
 .content {
   max-width: 72rem;
   margin: 0 auto;
