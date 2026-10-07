@@ -4,6 +4,7 @@
   --header-bg: #e8e5cf;
   --header-text: #1f1f1f;
   --accent: #1d4e89;
+  --header-line: #c9c6b1;
 }
 
 *, *::before, *::after {
