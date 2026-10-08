@@ -1,0 +1,39 @@
+.card--hero {
+  display: grid;
+  padding: 0;
+}
+
+
+.card--hero > img,
+.card--hero > .hero__content {
+  grid-area: 1 / 1;
+}
+
+.card--hero img {
+  display: block;
+  width: 100%;
+  height: clamp(16rem, 40vw, 27rem);
+  object-fit: cover;
+}
+
+.hero__content {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  align-items: flex-start;
+  padding: 1.5rem;
+  color: #ffffff;
+  background: linear-gradient(to top, rgba(9, 14, 24, 0.75), rgba(9, 14, 24, 0) 65%);
+}
+
+.hero__content h2 {
+  margin: 0 0 0.25rem;
+  color: #ffffff;
+  font-size: clamp(1.5rem, 4vw, 2.4rem);
+  line-height: 1.15;
+}
+
+.hero__content p {
+  margin: 0 0 0.9rem;
+  max-width: 34rem;
+}
