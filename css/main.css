@@ -1,8 +1,8 @@
 :root {
   --bg: #f4f6fa;
-  --text: #1f1f1f;
+  --text: #2e2e37;
 
-  --header-bg: #ffffff;
+  --header-bg: #f5f6f9;
   --header-text: #1f1f1f;
   --accent: #1d4e89;
   --header-line: #cfe3f3;
@@ -31,7 +31,7 @@ body {
 }
 
 .content {
-  max-width: 72rem;
+  max-width: 80rem;
   margin: 0 auto;
-  padding: 2rem 1.25rem;
+  padding: 1rem 1.25rem;
 }

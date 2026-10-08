@@ -8,8 +8,8 @@
 .card-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr));
-  gap: 0.5em;
-  margin: 2rem 0;
+  gap: 1em;
+  margin: 1rem 0 2rem;
 }
 
 
@@ -21,8 +21,13 @@
 }
 
 .card__body {
-  padding: 1rem;
+  padding: 1.25rem;
 }
+
+.card__body .label { margin: 0 0 0.25rem; }
+.card__body h2     { margin: 0 0 0.5rem; }
+.card__body p      { margin: 0 0 0.75rem; }
+.card__body > :last-child { margin-bottom: 0; }
 
 .label {
   margin: 0 0 0.5rem;

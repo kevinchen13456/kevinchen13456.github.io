@@ -3,18 +3,17 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>My Site</title>
-  <!-- main.css first: it defines the :root variables the others use -->
-  <link rel="stylesheet" href="css/main.css">
-  <link rel="stylesheet" href="css/header.css">
-  <link rel="stylesheet" href="css/card.css">
-  <link rel="stylesheet" href="css/banner.css">
+  <title>Text on Tab</title>
+  <link rel="stylesheet" href="main.css">
+  <link rel="stylesheet" href="header.css">
+  <link rel="stylesheet" href="card.css">
+  <link rel="stylesheet" href="banner.css">
 </head>
 <body>
 
   <header class="site-header">
     <div class="header-inner">
-      <a class="logo" href="#top">My Site</a>
+      <a class="logo" href="#top">Text on top left</a>
       <nav aria-label="Main">
         <ul class="nav-list">
           <li><a href="#top" aria-current="page">Home</a></li>
@@ -31,38 +30,31 @@
 
     <!-- Hero banner: image and text overlap in one grid cell -->
     <section class="card card--hero">
-      <img
-        alt="Placeholder banner"
-        src="data:image/svg+xml;utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1200 600'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0' stop-color='%23cfe3f3'/%3E%3Cstop offset='1' stop-color='%231d4e89'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='1200' height='600' fill='url(%23g)'/%3E%3C/svg%3E">
       <div class="hero__content">
         <h2>Invisible No More</h2>
         <p>Living with a disability can be challenging, but it doesn't have to be that way. Here at Lead for Change, we can make your voices heard.</p>
-        <a class="hero__cta" href="#about">Learn more</a>
+        <!-- <a class="hero__cta" href="#about">Learn more</a> -->
       </div>
     </section>
 
     <div class="card-grid">
       <article class="card">
-        <img class="card__image" alt="" src="data:image/svg+xml;utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1200 600'%3E%3Crect width='1200' height='600' fill='%23cfe3f3'/%3E%3C/svg%3E">
         <div class="card__body">
-          <p class="label">Category</p>
-          <h3>Card one</h3>
-          <p>Placeholder card text.</p>
+          <h2>Our Mission</h2>
+          <p>Mission Statement Mission Statement Mission Statement Mission Statement Mission Statement Mission Statement Mission Statement Mission Statement Mission Statement Mission Statement </p>
         </div>
       </article>
       <article class="card">
-        <img class="card__image" alt="" src="data:image/svg+xml;utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1200 600'%3E%3Crect width='1200' height='600' fill='%23cfe3f3'/%3E%3C/svg%3E">
         <div class="card__body">
-          <p class="label">Category</p>
-          <h3>Card one</h3>
-          <p>Placeholder card text.</p>
+          <h2>Planned Events</h2>
+          <p> There was going to be a sort of calendar here, but i'll do it later.</p>
+          <p> | 10/7/ 2026 there will be a meeting</p>
+          <p> | 10/8/ 2026 there will be a meeting</p>
+          <p>All Events -></p>
         </div>
       </article>
     </div>
 
-
-    <h2 id="contact">Contact</h2>
-    <p>Add an email address or links to your profiles here.</p>
   </main>
 
 </body>
