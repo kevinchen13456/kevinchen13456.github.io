@@ -6,14 +6,12 @@
   --header-text: #1f1f1f;
   --accent: #1d4e89;
   --header-line: #c9c6b1;
-  
+
   --title: #2c4a7c;
   --card-bg: #ffffff;
   --card-border: #cfe3f3;
   --muted: #5a6e7a;
 }
-
-
 
 *, *::before, *::after {
   box-sizing: border-box;
