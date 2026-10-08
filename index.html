@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>My Site</title>
-
+  <!-- main.css first: it defines the :root variables the others use -->
   <link rel="stylesheet" href="css/main.css">
   <link rel="stylesheet" href="css/header.css">
   <link rel="stylesheet" href="css/card.css">
@@ -27,14 +27,15 @@
 
   <main class="content" id="top">
 
+    <!-- Hero banner: image and text overlap in one grid cell -->
     <section class="card card--hero">
       <img
         alt="Placeholder banner"
-        src="assets/media/banner.jpg">
+        src="data:image/svg+xml;utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1200 600'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0' stop-color='%23cfe3f3'/%3E%3Cstop offset='1' stop-color='%231d4e89'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='1200' height='600' fill='url(%23g)'/%3E%3C/svg%3E">
       <div class="hero__content">
-        <h2>Hero banner title</h2>
-        <p>Text sits over the image at the bottom, on a dark gradient so it stays readable.</p>
-        <a href="#about">Learn more</a>
+        <h2>Big bold headline over a few lines</h2>
+        <p>A short supporting sentence sits under the headline, with the image showing on the right.</p>
+        <a class="hero__cta" href="#about">Learn more</a>
       </div>
     </section>
 
@@ -44,6 +45,7 @@
     <h2 id="about">About</h2>
     <p>Put a short description of yourself or your project here.</p>
 
+    <!-- Cards: uses card__image, card__body and label. The grid is inline for testing only. -->
     <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(16rem,1fr));gap:1rem;margin-bottom:2rem;">
       <article class="card">
         <img class="card__image" alt="" src="data:image/svg+xml;utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1200 600'%3E%3Crect width='1200' height='600' fill='%23cfe3f3'/%3E%3C/svg%3E">
