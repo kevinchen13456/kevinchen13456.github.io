@@ -5,6 +5,14 @@
   overflow: hidden;
 }
 
+.card-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr));
+  gap: 0.5em;
+  margin: 2rem 0;
+}
+
+
 .card__image {
   display: block;
   width: 100%;
