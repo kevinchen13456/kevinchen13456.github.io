@@ -99,9 +99,9 @@
 
 .logo-row img {
   display: block;
-  height: auto;             /* all logos share a height; widths follow their proportions */
-  width: 6rem;
-  max-width: 10rem;
+  height: 5rem;         
+  width: auto;          
+  max-width: 16rem;      
   object-fit: contain;
 }
 
