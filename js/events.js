@@ -82,13 +82,27 @@ function el(tag, className, text) {
   return node;
 }
 
-events.sort((a, b) => a.date.localeCompare(b.date));
 
+events.sort((a, b) => b.date.localeCompare(a.date));
+
+
+function nowLine() {
+  const li = el("li", "now-line");
+  li.append(el("span", "now-label", "Today"));
+  return li;
+}
 
 function renderList() {
   listEl.innerHTML = "";
+
+  let lineDone = false;
   events.forEach((ev) => {
     const d = parse(ev.date);
+
+    if (!lineDone && d < today) {
+      listEl.append(nowLine());
+      lineDone = true;
+    }
 
     const button = el("button", "event-item" + (d < today ? " is-past" : ""));
     button.type = "button";
@@ -109,8 +123,10 @@ function renderList() {
     li.append(button);
     listEl.append(li);
   });
-}
 
+
+  if (!lineDone) listEl.append(nowLine());
+}
 
 function select(id, scroll) {
   const ev = events.find((e) => e.id === id) || events[0];
@@ -121,7 +137,9 @@ function select(id, scroll) {
   });
 
   detailEl.innerHTML = "";
-  detailEl.append(el("p", "label", d < today ? "Past event" : "Upcoming event"));
+  const isToday = d.getTime() === today.getTime();
+  const status = d < today ? "Past event" : isToday ? "Happening today" : "Upcoming event";
+  detailEl.append(el("p", "label", status));
   detailEl.append(el("h2", "", ev.title));
 
   const meta = el("dl", "event-meta");
@@ -143,11 +161,11 @@ function select(id, scroll) {
     detailEl.append(link);
   }
 
-
   if (scroll && window.matchMedia("(max-width: 48rem)").matches) {
     detailEl.scrollIntoView({ behavior: "smooth", block: "start" });
   }
 }
+
 
 function idFromHash() {
   return decodeURIComponent(location.hash.slice(1));
@@ -160,7 +178,6 @@ listEl.addEventListener("click", (e) => {
   try { history.pushState(null, "", "#" + button.dataset.id); } catch (err) {}
 });
 
-
 function selectFromUrl() {
   const id = idFromHash();
   if (events.some((e) => e.id === id)) select(id, false);   // ignore other # links
@@ -168,7 +185,9 @@ function selectFromUrl() {
 window.addEventListener("popstate", selectFromUrl);
 window.addEventListener("hashchange", selectFromUrl);
 
+
 renderList();
 const fromUrl = events.find((e) => e.id === idFromHash());
-const nextUp = events.find((e) => parse(e.date) >= today) || events[events.length - 1];
+const upcoming = events.filter((e) => parse(e.date) >= today);
+const nextUp = upcoming.length ? upcoming[upcoming.length - 1] : events[0];
 select((fromUrl || nextUp).id, false);
