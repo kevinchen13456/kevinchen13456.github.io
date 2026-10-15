@@ -67,16 +67,15 @@ const events = [
     href: "#"
   }
 ];
- 
+
 const listEl = document.getElementById("event-list");
 const detailEl = document.getElementById("event-detail");
- 
+
 const today = new Date();
 today.setHours(0, 0, 0, 0);
- 
+
 
 const parse = (iso) => new Date(iso + "T00:00:00");
- 
 
 function el(tag, className, text) {
   const node = document.createElement(tag);
@@ -84,53 +83,53 @@ function el(tag, className, text) {
   if (text !== undefined) node.textContent = text;
   return node;
 }
- 
+
 
 events.sort((a, b) => b.date.localeCompare(a.date));
- 
+
 
 function nowLine() {
   const li = el("li", "now-line");
   li.append(el("span", "now-label", "Today"));
   return li;
 }
- 
+
 function renderList() {
   listEl.innerHTML = "";
 
   let lineDone = false;
   events.forEach((ev) => {
     const d = parse(ev.date);
- 
+
     if (!lineDone && d < today) {
       listEl.append(nowLine());
       lineDone = true;
     }
- 
+
     const button = el("button", "event-item" + (d < today ? " is-past" : ""));
     button.type = "button";
     button.dataset.id = ev.id;
- 
+
     const badge = el("span", "event-date");
     badge.append(
       el("span", "event-month", d.toLocaleDateString(undefined, { month: "short" })),
       el("span", "event-day", String(d.getDate()))
     );
- 
+
     const text = el("span");
     text.append(el("span", "event-name", ev.title), el("span", "event-where", ev.location));
- 
+
     button.append(badge, text);
- 
+
     const li = el("li");
     li.append(button);
     listEl.append(li);
   });
- 
+
 
   if (!lineDone) listEl.append(nowLine());
 }
- 
+
 
 function mediaItem(m) {
   if (m.type === "video") {
@@ -148,16 +147,16 @@ function mediaItem(m) {
   img.draggable = false;
   return img;
 }
- 
+
 
 const lightbox = (function () {
   const dlg = el("dialog", "lightbox");
   dlg.setAttribute("aria-label", "Photo viewer");
- 
+
   const img = el("img", "lightbox__img");
   const caption = el("p", "lightbox__caption");
   const count = el("p", "lightbox__count");
- 
+
   function button(cls, text, label) {
     const b = el("button", "lightbox__btn " + cls, text);
     b.type = "button";
@@ -167,14 +166,14 @@ const lightbox = (function () {
   const closeBtn = button("lightbox__close", "\u00D7", "Close");
   const prevBtn = button("lightbox__prev", "\u2039", "Previous photo");
   const nextBtn = button("lightbox__next", "\u203A", "Next photo");
- 
+
   dlg.append(img, caption, count, prevBtn, nextBtn, closeBtn);
   document.body.append(dlg);
- 
-  let items = [];  
+
+  let items = []; 
   let pos = 0;
   let onClose = null;
- 
+
   function render() {
     const m = items[pos].m;
     img.src = m.src;
@@ -184,12 +183,12 @@ const lightbox = (function () {
     count.textContent = items.length > 1 ? (pos + 1) + " / " + items.length : "";
     prevBtn.hidden = nextBtn.hidden = items.length < 2;
   }
- 
+
   function step(d) {
     pos = (pos + d + items.length) % items.length;
     render();
   }
- 
+
   prevBtn.addEventListener("click", () => step(-1));
   nextBtn.addEventListener("click", () => step(1));
   closeBtn.addEventListener("click", () => dlg.close());
@@ -203,20 +202,20 @@ const lightbox = (function () {
   });
   dlg.addEventListener("close", () => {
     document.documentElement.style.overflow = "";
-    if (onClose) onClose(items[pos].i);   
+    if (onClose) onClose(items[pos].i); 
   });
- 
+
   return {
     open(list, start, done) {
       items = list;
       pos = start;
       onClose = done;
-      if (typeof dlg.showModal !== "function") {  
+      if (typeof dlg.showModal !== "function") { 
         window.open(items[pos].m.src, "_blank");
         return;
       }
       render();
-      document.documentElement.style.overflow = "hidden";  
+      document.documentElement.style.overflow = "hidden"; 
       dlg.showModal();
     }
   };
@@ -228,18 +227,18 @@ function buildCarousel(media, label) {
   root.setAttribute("role", "group");
   root.setAttribute("aria-roledescription", "carousel");
   root.setAttribute("aria-label", label);
- 
+
   const viewport = el("div", "carousel__viewport");
   const track = el("ul", "carousel__track");
   const caption = el("figcaption", "event-media__caption");
   let index = 0;
- 
+
   const slides = media.map((m, i) => {
     const slide = el("li", "carousel__slide");
     slide.setAttribute("role", "group");
     slide.setAttribute("aria-roledescription", "slide");
     slide.setAttribute("aria-label", (i + 1) + " of " + media.length);
- 
+
     if (m.type === "video") {
       slide.append(mediaItem(m));
     } else {
@@ -256,22 +255,22 @@ function buildCarousel(media, label) {
     track.append(slide);
     return slide;
   });
- 
+
   viewport.append(track);
   root.append(viewport);
- 
+
   let dots = [];
   if (media.length > 1) {
     const prev = el("button", "carousel__btn carousel__btn--prev", "\u2039");
     prev.type = "button";
     prev.setAttribute("aria-label", "Previous");
     prev.addEventListener("click", () => go(index - 1));
- 
+
     const next = el("button", "carousel__btn carousel__btn--next", "\u203A");
     next.type = "button";
     next.setAttribute("aria-label", "Next");
     next.addEventListener("click", () => go(index + 1));
- 
+
     const dotBar = el("div", "carousel__dots");
     dots = media.map((m, i) => {
       const dot = el("button", "carousel__dot");
@@ -281,15 +280,16 @@ function buildCarousel(media, label) {
       dotBar.append(dot);
       return dot;
     });
- 
+
     root.append(prev, next, dotBar);
   }
+
 
   function go(i) {
     index = (i + media.length) % media.length;
     track.style.transform = "translateX(" + (-100 * index) + "%)";
     slides.forEach((slide, n) => {
-      slide.inert = n !== index;                       
+      slide.inert = n !== index;
       slide.setAttribute("aria-hidden", n !== index ? "true" : "false");
       const video = slide.querySelector("video");
       if (video && n !== index) video.pause();
@@ -299,11 +299,10 @@ function buildCarousel(media, label) {
     caption.hidden = !media[index].caption;
   }
 
-  
   let startX = null;
   let swiped = false;
   viewport.addEventListener("pointerdown", (e) => {
-    if (e.target.closest("video")) return;   
+    if (e.target.closest("video")) return; 
     startX = e.clientX;
     swiped = false;
   });
@@ -321,14 +320,14 @@ function buildCarousel(media, label) {
   viewport.addEventListener("click", (e) => {
     if (swiped) { e.stopPropagation(); e.preventDefault(); swiped = false; }
   }, true);
- 
+
 
   root.addEventListener("keydown", (e) => {
     if (e.target.closest("video") || media.length < 2) return;
     if (e.key === "ArrowLeft") go(index - 1);
     if (e.key === "ArrowRight") go(index + 1);
   });
- 
+
   figure.append(root, caption);
   go(0);
   return figure;
@@ -338,23 +337,23 @@ function buildCarousel(media, label) {
 function select(id, scroll) {
   const ev = events.find((e) => e.id === id) || events[0];
   const d = parse(ev.date);
- 
+
   listEl.querySelectorAll(".event-item").forEach((b) => {
     b.setAttribute("aria-current", b.dataset.id === ev.id ? "true" : "false");
   });
- 
+
   detailEl.innerHTML = "";
- 
+
   const media = ev.media || [];
   if (media.length) detailEl.append(buildCarousel(media, ev.title + " gallery"));
- 
+
   const body = el("div", "event-body");
- 
+
   const isToday = d.getTime() === today.getTime();
   const status = d < today ? "Past event" : isToday ? "Happening today" : "Upcoming event";
   body.append(el("p", "label", status));
   body.append(el("h2", "", ev.title));
- 
+
   const meta = el("dl", "event-meta");
   const rows = [
     ["Date", d.toLocaleDateString(undefined, { weekday: "long", year: "numeric", month: "long", day: "numeric" })],
@@ -367,43 +366,44 @@ function select(id, scroll) {
     meta.append(group);
   });
   body.append(meta);
- 
+
   [].concat(ev.description || []).forEach((p) => body.append(el("p", "", p)));
- 
+
   if (ev.href) {
     const link = el("a", "event-button", ev.linkText || "Learn more");
     link.href = ev.href;
     body.append(link);
   }
- 
+
   detailEl.append(body);
- 
+
 
   if (scroll && window.matchMedia("(max-width: 48rem)").matches) {
     detailEl.scrollIntoView({ behavior: "smooth", block: "start" });
   }
 }
- 
+
 
 function idFromHash() {
   return decodeURIComponent(location.hash.slice(1));
 }
- 
+
 listEl.addEventListener("click", (e) => {
   const button = e.target.closest(".event-item");
   if (!button) return;
   select(button.dataset.id, true);
   try { history.pushState(null, "", "#" + button.dataset.id); } catch (err) {}
 });
- 
+
 
 function selectFromUrl() {
   const id = idFromHash();
-  if (events.some((e) => e.id === id)) select(id, false);   
+  if (events.some((e) => e.id === id)) select(id, false);
 }
 window.addEventListener("popstate", selectFromUrl);
 window.addEventListener("hashchange", selectFromUrl);
- 
+
+
 renderList();
 const fromUrl = events.find((e) => e.id === idFromHash());
 
