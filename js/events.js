@@ -6,7 +6,7 @@ const events = [
     date: "2026-10-09",
     description: "Place Holder",
     media: [
-      { src: "../media/assets/uv_icon.jpg", alt: "Image Failed to Load" }
+      { src: "../assets/media/uv_icon.jpg", alt: "Image Failed to Load" }
     ]
   }
 ];
