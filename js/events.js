@@ -1,4 +1,4 @@
-
+// ---------- 1. The data: add or edit events here ----------
 const events = [
   {
     id: "open-house",
@@ -74,6 +74,7 @@ today.setHours(0, 0, 0, 0);
 
 const parse = (iso) => new Date(iso + "T00:00:00");
 
+
 function el(tag, className, text) {
   const node = document.createElement(tag);
   if (className) node.className = className;
@@ -82,6 +83,7 @@ function el(tag, className, text) {
 }
 
 events.sort((a, b) => a.date.localeCompare(b.date));
+
 
 function renderList() {
   listEl.innerHTML = "";
@@ -141,11 +143,11 @@ function select(id, scroll) {
     detailEl.append(link);
   }
 
+
   if (scroll && window.matchMedia("(max-width: 48rem)").matches) {
     detailEl.scrollIntoView({ behavior: "smooth", block: "start" });
   }
 }
-
 
 function idFromHash() {
   return decodeURIComponent(location.hash.slice(1));
@@ -158,10 +160,14 @@ listEl.addEventListener("click", (e) => {
   try { history.pushState(null, "", "#" + button.dataset.id); } catch (err) {}
 });
 
-window.addEventListener("popstate", () => select(idFromHash(), false));
-window.addEventListener("hashchange", () => select(idFromHash(), false));
 
--
+function selectFromUrl() {
+  const id = idFromHash();
+  if (events.some((e) => e.id === id)) select(id, false);   // ignore other # links
+}
+window.addEventListener("popstate", selectFromUrl);
+window.addEventListener("hashchange", selectFromUrl);
+
 renderList();
 const fromUrl = events.find((e) => e.id === idFromHash());
 const nextUp = events.find((e) => parse(e.date) >= today) || events[events.length - 1];
