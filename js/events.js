@@ -1,4 +1,4 @@
-// ---------- 1. The data: add or edit events here ----------
+
 const events = [
   {
     id: "open-house",
@@ -6,11 +6,13 @@ const events = [
     date: "2026-09-12",
     time: "10:00 AM - 1:00 PM",
     location: "Community Center, Main Hall",
-    description: [
-      "Our first open house of the year. Visitors toured the space, met the team, and tried a few activities.",
-      "Thank you to everyone who came."
+    description: "Our first open house of the year. Visitors toured the space, met the team, and tried a few activities. Thank you to everyone who came.",
+    media: [
+      { src: "../images/events/open-house-1.svg", alt: "Placeholder photo of guests at the open house", caption: "Guests arriving at the main hall" },
+      { src: "../images/events/open-house-2.svg", alt: "Placeholder photo of a tour" },
+      { src: "../images/events/open-house-3.svg", alt: "Placeholder photo of the activity tables" }
     ],
-    linkText: "View photos",
+    linkText: "View all photos",
     href: "#"
   },
   {
@@ -19,9 +21,10 @@ const events = [
     date: "2026-10-24",
     time: "2:00 PM - 4:00 PM",
     location: "Room 204, Library Annex",
-    description: [
-      "A hands-on session for beginners. No experience is needed, and all materials are provided.",
-      "Space is limited, so please register ahead of time."
+    description: "A hands-on session for beginners. No experience is needed, and all materials are provided. Space is limited, so please register ahead of time.",
+    media: [
+      { src: "../images/events/intro-workshop-1.svg", alt: "Placeholder photo of the workshop room" },
+      { src: "../images/events/intro-workshop-2.svg", alt: "Placeholder photo of the materials" }
     ],
     linkText: "Register",
     href: "#"
@@ -32,9 +35,9 @@ const events = [
     date: "2026-11-14",
     time: "6:00 PM - 9:00 PM",
     location: "Riverside Hall",
-    description: [
-      "An evening of food, music, and a silent auction. All proceeds support next year's programs.",
-      "Tickets include dinner. Children under 12 attend free."
+    description: "An evening of food, music, and a silent auction. All proceeds support next year's programs. Tickets include dinner, and children under 12 attend free.",
+    media: [
+      { src: "../images/events/fundraiser-1.svg", alt: "Placeholder photo of the fundraiser hall" }
     ],
     linkText: "Get tickets",
     href: "#"
@@ -45,9 +48,8 @@ const events = [
     date: "2027-01-23",
     time: "9:30 AM - 12:00 PM",
     location: "Online (link sent after sign-up)",
-    description: [
-      "Learn how our programs run and where help is needed most. This session is required for new volunteers."
-    ],
+    description: "Learn how our programs run and where help is needed most. This session is required for new volunteers.",
+    media: [],
     linkText: "Sign up",
     href: "#"
   },
@@ -57,23 +59,24 @@ const events = [
     date: "2027-03-06",
     time: "11:00 AM - 12:30 PM",
     location: "Community Center, Main Hall",
-    description: [
-      "A look back at the year, a financial update, and an open question period. Everyone is welcome."
+    description: "A look back at the year, a financial update, and an open question period. Everyone is welcome.",
+    media: [
+      { src: "../images/events/annual-meeting-1.svg", alt: "Placeholder photo of last year's meeting" }
     ],
     linkText: "Add to calendar",
     href: "#"
   }
 ];
-
+ 
 const listEl = document.getElementById("event-list");
 const detailEl = document.getElementById("event-detail");
-
+ 
 const today = new Date();
 today.setHours(0, 0, 0, 0);
-
+ 
 
 const parse = (iso) => new Date(iso + "T00:00:00");
-
+ 
 
 function el(tag, className, text) {
   const node = document.createElement(tag);
@@ -81,67 +84,277 @@ function el(tag, className, text) {
   if (text !== undefined) node.textContent = text;
   return node;
 }
-
+ 
 
 events.sort((a, b) => b.date.localeCompare(a.date));
-
+ 
 
 function nowLine() {
   const li = el("li", "now-line");
   li.append(el("span", "now-label", "Today"));
   return li;
 }
-
+ 
 function renderList() {
   listEl.innerHTML = "";
 
   let lineDone = false;
   events.forEach((ev) => {
     const d = parse(ev.date);
-
+ 
     if (!lineDone && d < today) {
       listEl.append(nowLine());
       lineDone = true;
     }
-
+ 
     const button = el("button", "event-item" + (d < today ? " is-past" : ""));
     button.type = "button";
     button.dataset.id = ev.id;
-
+ 
     const badge = el("span", "event-date");
     badge.append(
       el("span", "event-month", d.toLocaleDateString(undefined, { month: "short" })),
       el("span", "event-day", String(d.getDate()))
     );
-
+ 
     const text = el("span");
     text.append(el("span", "event-name", ev.title), el("span", "event-where", ev.location));
-
+ 
     button.append(badge, text);
-
+ 
     const li = el("li");
     li.append(button);
     listEl.append(li);
   });
-
+ 
 
   if (!lineDone) listEl.append(nowLine());
 }
+ 
+
+function mediaItem(m) {
+  if (m.type === "video") {
+    const v = el("video", "event-media__item");
+    v.src = m.src;
+    v.controls = true;
+    v.preload = "metadata";
+    if (m.poster) v.poster = m.poster;
+    v.setAttribute("aria-label", m.alt || "Event video");
+    return v;
+  }
+  const img = el("img", "event-media__item");
+  img.src = m.src;
+  img.alt = m.alt || "";
+  img.draggable = false;
+  return img;
+}
+ 
+
+const lightbox = (function () {
+  const dlg = el("dialog", "lightbox");
+  dlg.setAttribute("aria-label", "Photo viewer");
+ 
+  const img = el("img", "lightbox__img");
+  const caption = el("p", "lightbox__caption");
+  const count = el("p", "lightbox__count");
+ 
+  function button(cls, text, label) {
+    const b = el("button", "lightbox__btn " + cls, text);
+    b.type = "button";
+    b.setAttribute("aria-label", label);
+    return b;
+  }
+  const closeBtn = button("lightbox__close", "\u00D7", "Close");
+  const prevBtn = button("lightbox__prev", "\u2039", "Previous photo");
+  const nextBtn = button("lightbox__next", "\u203A", "Next photo");
+ 
+  dlg.append(img, caption, count, prevBtn, nextBtn, closeBtn);
+  document.body.append(dlg);
+ 
+  let items = [];  
+  let pos = 0;
+  let onClose = null;
+ 
+  function render() {
+    const m = items[pos].m;
+    img.src = m.src;
+    img.alt = m.alt || "";
+    caption.textContent = m.caption || "";
+    caption.hidden = !m.caption;
+    count.textContent = items.length > 1 ? (pos + 1) + " / " + items.length : "";
+    prevBtn.hidden = nextBtn.hidden = items.length < 2;
+  }
+ 
+  function step(d) {
+    pos = (pos + d + items.length) % items.length;
+    render();
+  }
+ 
+  prevBtn.addEventListener("click", () => step(-1));
+  nextBtn.addEventListener("click", () => step(1));
+  closeBtn.addEventListener("click", () => dlg.close());
+
+  dlg.addEventListener("click", (e) => {
+    if (!e.target.closest("img, button, p")) dlg.close();
+  });
+  dlg.addEventListener("keydown", (e) => {
+    if (e.key === "ArrowLeft") step(-1);
+    if (e.key === "ArrowRight") step(1);
+  });
+  dlg.addEventListener("close", () => {
+    document.documentElement.style.overflow = "";
+    if (onClose) onClose(items[pos].i);   
+  });
+ 
+  return {
+    open(list, start, done) {
+      items = list;
+      pos = start;
+      onClose = done;
+      if (typeof dlg.showModal !== "function") {  
+        window.open(items[pos].m.src, "_blank");
+        return;
+      }
+      render();
+      document.documentElement.style.overflow = "hidden";  
+      dlg.showModal();
+    }
+  };
+})();
+
+function buildCarousel(media, label) {
+  const figure = el("figure", "event-media");
+  const root = el("div", "carousel");
+  root.setAttribute("role", "group");
+  root.setAttribute("aria-roledescription", "carousel");
+  root.setAttribute("aria-label", label);
+ 
+  const viewport = el("div", "carousel__viewport");
+  const track = el("ul", "carousel__track");
+  const caption = el("figcaption", "event-media__caption");
+  let index = 0;
+ 
+  const slides = media.map((m, i) => {
+    const slide = el("li", "carousel__slide");
+    slide.setAttribute("role", "group");
+    slide.setAttribute("aria-roledescription", "slide");
+    slide.setAttribute("aria-label", (i + 1) + " of " + media.length);
+ 
+    if (m.type === "video") {
+      slide.append(mediaItem(m));
+    } else {
+      const zoom = el("button", "carousel__zoom");
+      zoom.type = "button";
+      zoom.setAttribute("aria-label", "Enlarge photo" + (m.alt ? ": " + m.alt : ""));
+      zoom.append(mediaItem(m));
+      zoom.addEventListener("click", () => {
+        const photos = media.map((x, n) => ({ m: x, i: n })).filter((x) => x.m.type !== "video");
+        lightbox.open(photos, photos.findIndex((x) => x.i === i), (n) => go(n));
+      });
+      slide.append(zoom);
+    }
+    track.append(slide);
+    return slide;
+  });
+ 
+  viewport.append(track);
+  root.append(viewport);
+ 
+  let dots = [];
+  if (media.length > 1) {
+    const prev = el("button", "carousel__btn carousel__btn--prev", "\u2039");
+    prev.type = "button";
+    prev.setAttribute("aria-label", "Previous");
+    prev.addEventListener("click", () => go(index - 1));
+ 
+    const next = el("button", "carousel__btn carousel__btn--next", "\u203A");
+    next.type = "button";
+    next.setAttribute("aria-label", "Next");
+    next.addEventListener("click", () => go(index + 1));
+ 
+    const dotBar = el("div", "carousel__dots");
+    dots = media.map((m, i) => {
+      const dot = el("button", "carousel__dot");
+      dot.type = "button";
+      dot.setAttribute("aria-label", "Go to " + (i + 1) + " of " + media.length);
+      dot.addEventListener("click", () => go(i));
+      dotBar.append(dot);
+      return dot;
+    });
+ 
+    root.append(prev, next, dotBar);
+  }
+
+  function go(i) {
+    index = (i + media.length) % media.length;
+    track.style.transform = "translateX(" + (-100 * index) + "%)";
+    slides.forEach((slide, n) => {
+      slide.inert = n !== index;                       
+      slide.setAttribute("aria-hidden", n !== index ? "true" : "false");
+      const video = slide.querySelector("video");
+      if (video && n !== index) video.pause();
+    });
+    dots.forEach((dot, n) => dot.setAttribute("aria-current", n === index ? "true" : "false"));
+    caption.textContent = media[index].caption || "";
+    caption.hidden = !media[index].caption;
+  }
+
+  
+  let startX = null;
+  let swiped = false;
+  viewport.addEventListener("pointerdown", (e) => {
+    if (e.target.closest("video")) return;   
+    startX = e.clientX;
+    swiped = false;
+  });
+  viewport.addEventListener("pointerup", (e) => {
+    if (startX === null) return;
+    const dx = e.clientX - startX;
+    startX = null;
+    if (Math.abs(dx) > 40) {
+      swiped = true;
+      go(index + (dx < 0 ? 1 : -1));
+    }
+  });
+  viewport.addEventListener("pointercancel", () => { startX = null; });
+
+  viewport.addEventListener("click", (e) => {
+    if (swiped) { e.stopPropagation(); e.preventDefault(); swiped = false; }
+  }, true);
+ 
+
+  root.addEventListener("keydown", (e) => {
+    if (e.target.closest("video") || media.length < 2) return;
+    if (e.key === "ArrowLeft") go(index - 1);
+    if (e.key === "ArrowRight") go(index + 1);
+  });
+ 
+  figure.append(root, caption);
+  go(0);
+  return figure;
+}
+
 
 function select(id, scroll) {
   const ev = events.find((e) => e.id === id) || events[0];
   const d = parse(ev.date);
-
+ 
   listEl.querySelectorAll(".event-item").forEach((b) => {
     b.setAttribute("aria-current", b.dataset.id === ev.id ? "true" : "false");
   });
-
+ 
   detailEl.innerHTML = "";
+ 
+  const media = ev.media || [];
+  if (media.length) detailEl.append(buildCarousel(media, ev.title + " gallery"));
+ 
+  const body = el("div", "event-body");
+ 
   const isToday = d.getTime() === today.getTime();
   const status = d < today ? "Past event" : isToday ? "Happening today" : "Upcoming event";
-  detailEl.append(el("p", "label", status));
-  detailEl.append(el("h2", "", ev.title));
-
+  body.append(el("p", "label", status));
+  body.append(el("h2", "", ev.title));
+ 
   const meta = el("dl", "event-meta");
   const rows = [
     ["Date", d.toLocaleDateString(undefined, { weekday: "long", year: "numeric", month: "long", day: "numeric" })],
@@ -149,45 +362,51 @@ function select(id, scroll) {
     ["Where", ev.location]
   ];
   rows.forEach(([label, value]) => {
-    meta.append(el("dt", "", label), el("dd", "", value));
+    const group = el("div");
+    group.append(el("dt", "", label), el("dd", "", value));
+    meta.append(group);
   });
-  detailEl.append(meta);
-
-  ev.description.forEach((p) => detailEl.append(el("p", "", p)));
-
+  body.append(meta);
+ 
+  [].concat(ev.description || []).forEach((p) => body.append(el("p", "", p)));
+ 
   if (ev.href) {
     const link = el("a", "event-button", ev.linkText || "Learn more");
     link.href = ev.href;
-    detailEl.append(link);
+    body.append(link);
   }
+ 
+  detailEl.append(body);
+ 
 
   if (scroll && window.matchMedia("(max-width: 48rem)").matches) {
     detailEl.scrollIntoView({ behavior: "smooth", block: "start" });
   }
 }
-
+ 
 
 function idFromHash() {
   return decodeURIComponent(location.hash.slice(1));
 }
-
+ 
 listEl.addEventListener("click", (e) => {
   const button = e.target.closest(".event-item");
   if (!button) return;
   select(button.dataset.id, true);
   try { history.pushState(null, "", "#" + button.dataset.id); } catch (err) {}
 });
+ 
 
 function selectFromUrl() {
   const id = idFromHash();
-  if (events.some((e) => e.id === id)) select(id, false);   // ignore other # links
+  if (events.some((e) => e.id === id)) select(id, false);   
 }
 window.addEventListener("popstate", selectFromUrl);
 window.addEventListener("hashchange", selectFromUrl);
-
-
+ 
 renderList();
 const fromUrl = events.find((e) => e.id === idFromHash());
+
 const upcoming = events.filter((e) => parse(e.date) >= today);
 const nextUp = upcoming.length ? upcoming[upcoming.length - 1] : events[0];
 select((fromUrl || nextUp).id, false);
