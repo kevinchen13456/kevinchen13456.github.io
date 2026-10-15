@@ -16,6 +16,7 @@
   box-shadow: 0 0.35rem 1.25rem rgb(31 54 83 / 6%);
 }
 
+/*
 .contact-card__icon {
   display: grid;
   flex: 0 0 3rem;
@@ -36,6 +37,7 @@
   stroke-linejoin: round;
   stroke-width: 1.8;
 }
+*/
 
 .contact-card__content {
   min-width: 0;
