@@ -6,7 +6,7 @@ const events = [
     date: "2026-10-09",
     description: "A look back at the year, a financial update, and an open question period. Everyone is welcome.",
     media: [
-      { src: "../media/icons/uv_icon.jpg", alt: "Image Failed to Load" }
+      { src: "../media/assets/uv_icon.jpg", alt: "Image Failed to Load" }
     ]
   }
 ];
