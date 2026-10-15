@@ -60,15 +60,6 @@
   overflow-wrap: anywhere;
 }
 
-a.contact-card__value {
-  text-decoration-thickness: 1px;
-  text-underline-offset: 0.2em;
-}
-
-a.contact-card__value:hover {
-  text-decoration-thickness: 2px;
-}
-
 @media (max-width: 28rem) {
   .contact-card {
     padding: 1.15rem;

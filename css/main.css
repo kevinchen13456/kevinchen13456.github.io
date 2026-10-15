@@ -3,7 +3,7 @@
   --text: #2e2e37;
 
   --header-bg: #f5f6f9;
-  --header-text: #1f1f1f;
+  --header-text: var(--text);
   --accent: #1d4e89;
   --header-line: #cfe3f3;
 
@@ -30,6 +30,27 @@ body {
   line-height: 1.6;
 }
 
+h1, h2, h3, h4, h5, h6 {
+  color: var(--title);
+}
+
+a {
+  color: var(--accent);
+  text-decoration: none;
+}
+
+a:hover,
+a:focus-visible {
+  text-decoration-line: underline;
+  text-decoration-thickness: 2px;
+  text-underline-offset: 0.2em;
+}
+
+a:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+}
+
 .content {
   max-width: 80rem;
   margin: 0 auto;
@@ -47,6 +68,13 @@ body {
   font-size: clamp(1.75rem, 4vw, 2.25rem);
   line-height: 1.2;
   color: var(--title);    
+}
+
+.page-title {
+  margin: 0 0 1.25rem;
+  font-size: clamp(1.75rem, 4vw, 2.25rem);
+  line-height: 1.2;
+  color: var(--title);
 }
 
 .page-intro p {

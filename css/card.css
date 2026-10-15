@@ -55,12 +55,16 @@
   border: 1px solid var(--card-border);
   border-radius: 6px;
   color: var(--text);
-  text-decoration: none;
 }
 
 .item:hover {
   background: #f4f9fd;
   border-color: var(--accent);
+}
+
+.item:hover,
+.item:focus-visible {
+  text-decoration: none;
 }
 
 .item__date {
@@ -78,11 +82,19 @@
 
 .more-link {
   color: var(--accent);
-  text-decoration: none;
+  font-weight: 400;
 }
 
-.more-link:hover {
-  text-decoration: underline;
+.more-link::after {
+  content: "";
+  display: inline-block;
+  width: 0.85em;
+  height: 0.85em;
+  margin-left: 0.35em;
+  vertical-align: -0.08em;
+  background-color: currentColor;
+  -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath d='M2 8h11M8 3l5 5-5 5' fill='none' stroke='%23000' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.75'/%3E%3C/svg%3E") center / contain no-repeat;
+  mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath d='M2 8h11M8 3l5 5-5 5' fill='none' stroke='%23000' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.75'/%3E%3C/svg%3E") center / contain no-repeat;
 }
 
 

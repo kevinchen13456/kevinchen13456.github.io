@@ -17,7 +17,6 @@
   color: var(--header-text);
   font-size: 1.25rem;
   font-weight: 700;
-  text-decoration: none;
 }
 
 .nav-list {
@@ -29,12 +28,48 @@
 }
 
 .nav-list a {
+  position: relative;
   display: block;
   padding: 0.5rem 0.9rem;
   color: var(--header-text);
   text-decoration: none;
 }
 
+.nav-list a::after {
+  position: absolute;
+  right: 0.9rem;
+  bottom: 0.25rem;
+  left: 0.9rem;
+  height: 2px;
+  background: var(--accent);
+  content: "";
+  transform: scaleX(0);
+  transform-origin: center;
+  transition: transform 0.2s ease;
+}
+
+.nav-list a:hover::after,
+.nav-list a:focus-visible::after,
+.nav-list a[aria-current="page"]::after {
+  transform: scaleX(1);
+}
+
+.nav-list a[aria-current="page"] {
+  color: var(--accent);
+  font-weight: 600;
+}
+
+.nav-list a:hover,
+.nav-list a:focus-visible {
+  text-decoration: none;
+}
+
 .nav-list a:hover {
   color: var(--accent);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .nav-list a::after {
+    transition: none;
+  }
 }

@@ -22,7 +22,6 @@
 .hero__content h2 {
   margin: 0 0 1rem;
   max-width: 11ch;            
-  color: var(--text);
   font-size: clamp(2rem, 6vw, 4.5rem);
   font-weight: 800;
   line-height: 1.05;
@@ -40,10 +39,5 @@
   background: var(--accent);
   color: #ffffff;
   font-weight: 600;
-  text-decoration: none;
   border-radius: 999px;
-}
-
-.hero__cta:hover {
-  filter: brightness(1.15);
 }
