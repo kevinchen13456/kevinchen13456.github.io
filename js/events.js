@@ -8,7 +8,7 @@ const events = [
     location: "Community Center, Main Hall",
     description: "A look back at the year, a financial update, and an open question period. Everyone is welcome.",
     media: [
-      { src: "../media/uv_icon.jpg", alt: "Placeholder Icon" }
+      { src: "../assets/uv_icon.jpg", alt: "Placeholder Icon" }
     ],
     linkText: "Add to calendar",
     href: "#"
