@@ -36,3 +36,50 @@
   letter-spacing: 0.06em;
   color: var(--muted);
 }
+
+.item-list {
+  list-style: none;
+  margin: 0 0 0.75rem;
+  padding: 0;
+  display: grid;
+  gap: 0.5rem;
+}
+
+.item {
+  display: flex;
+  align-items: baseline;
+  gap: 0.75rem;
+  min-width: 0;               /* lets the title shrink so the ellipsis works */
+  padding: 0.5rem 0.75rem;
+  border: 1px solid var(--card-border);
+  border-radius: 6px;
+  color: var(--text);
+  text-decoration: none;
+}
+
+.item:hover {
+  background: #f4f9fd;
+  border-color: var(--accent);
+}
+
+.item__date {
+  flex: none;
+  font-size: 0.75rem;
+  color: var(--muted);
+}
+
+.item__title {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.more-link {
+  color: var(--accent);
+  text-decoration: none;
+}
+
+.more-link:hover {
+  text-decoration: underline;
+}
