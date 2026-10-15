@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Events - My Site</title>
+  <link rel="stylesheet" href="css/main.css">
+  <link rel="stylesheet" href="css/header.css">
+  <link rel="stylesheet" href="css/card.css">
+  <link rel="stylesheet" href="css/events.css">
+</head>
+<body>
+ 
+  <header class="site-header">
+    <div class="header-inner">
+      <a class="logo" href="index.html">My Site</a>
+      <nav aria-label="Main">
+        <ul class="nav-list">
+          <li><a href="index.html">Home</a></li>
+          <li><a href="events.html" aria-current="page">Events</a></li>
+          <li><a href="index.html#about">About</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+ 
+  <main class="content">
+    <h1 class="page-title">Events</h1>
+ 
+    <div class="events">
+      <nav class="card event-sidebar" aria-label="Events">
+        <p class="label">Select an event</p>
+        <ul class="event-list" id="event-list"></ul>
+      </nav>
+ 
+      <article class="card event-detail" id="event-detail" aria-live="polite">
+        <noscript>Please turn on JavaScript to browse events.</noscript>
+      </article>
+    </div>
+  </main>
+ 
+  <script src="js/events.js"></script>
+</body>
+</html>
