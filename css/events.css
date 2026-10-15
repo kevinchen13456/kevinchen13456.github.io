@@ -13,6 +13,7 @@
   top: 1rem;
 }
 
+
 .event-list {
   list-style: none;
   margin: 0;
@@ -89,6 +90,7 @@
   color: var(--muted);
 }
 
+
 .event-item.is-past .event-date { opacity: 0.6; }
 .event-item.is-past .event-name { color: var(--muted); }
 
@@ -120,7 +122,6 @@
   border-radius: 2px;
   background: var(--now);
 }
-
 
 .event-detail {
   padding: 0;
@@ -157,7 +158,7 @@ video.event-media__item {
 
 .carousel__viewport {
   overflow: hidden;
-  touch-action: pan-y;     
+  touch-action: pan-y;        
   background: #0f1b2d;
 }
 
