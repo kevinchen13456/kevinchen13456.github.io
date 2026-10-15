@@ -1,4 +1,4 @@
-
+/* Two columns: event list on the left, photos and details on the right */
 .events {
   --now: #c4401f;
   display: grid;
@@ -13,7 +13,7 @@
   top: 1rem;
 }
 
-
+/* only the list scrolls */
 .event-list {
   list-style: none;
   margin: 0;
@@ -84,17 +84,11 @@
   line-height: 1.3;
 }
 
-.event-where {
-  display: block;
-  font-size: 0.8rem;
-  color: var(--muted);
-}
-
-
+/* events that already happened */
 .event-item.is-past .event-date { opacity: 0.6; }
 .event-item.is-past .event-name { color: var(--muted); }
 
-
+/* a line marks where today falls in the list */
 .now-line {
   display: flex;
   align-items: center;
@@ -123,6 +117,7 @@
   background: var(--now);
 }
 
+/* ---------- the details card: media on top, text below ---------- */
 .event-detail {
   padding: 0;
 }
@@ -151,14 +146,14 @@ video.event-media__item {
   color: var(--muted);
 }
 
-
+/* ---------- the carousel ---------- */
 .carousel {
   position: relative;
 }
 
 .carousel__viewport {
   overflow: hidden;
-  touch-action: pan-y;        
+  touch-action: pan-y;        /* up/down still scrolls the page, left/right swipes the carousel */
   background: #0f1b2d;
 }
 
@@ -256,7 +251,7 @@ video.event-media__item {
   transform: scale(1.25);
 }
 
-
+/* ---------- the full-size viewer ---------- */
 .lightbox {
   position: fixed;
   inset: 0;
@@ -321,7 +316,7 @@ video.event-media__item {
 .lightbox__prev { left: 1rem; top: 50%; transform: translateY(-50%); }
 .lightbox__next { right: 1rem; top: 50%; transform: translateY(-50%); }
 
-
+/* the hidden attribute should always win over the display rules above */
 .lightbox [hidden],
 .event-media [hidden] { display: none !important; }
 
@@ -336,7 +331,7 @@ video.event-media__item {
   color: var(--title);
 }
 
-
+/* date, time and place sit in one row instead of a tall box */
 .event-meta {
   display: flex;
   flex-wrap: wrap;
@@ -357,19 +352,6 @@ video.event-media__item {
   margin: 0;
   font-weight: 500;
 }
-
-.event-button {
-  display: inline-block;
-  margin-top: 0.5rem;
-  padding: 0.5rem 1.1rem;
-  border-radius: 999px;
-  background: var(--accent);
-  color: #ffffff;
-  font-weight: 600;
-  text-decoration: none;
-}
-
-.event-button:hover { filter: brightness(1.12); }
 
 @media (max-width: 48rem) {
   .events { grid-template-columns: 1fr; }

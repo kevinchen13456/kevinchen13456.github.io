@@ -1,19 +1,16 @@
 
 const events = [
   {
-    id: "year-kickoff",
+    id: "uvscars",
     title: "Project Unveiling Scars",
-    date: "2026-10-06",
-    time: "11:00 AM - 12:30 PM",
-    location: "Community Center, Main Hall",
+    date: "2026-10-09",
     description: "A look back at the year, a financial update, and an open question period. Everyone is welcome.",
     media: [
-      { src: "../assets/uv_icon.jpg", alt: "Placeholder Icon" }
-    ],
-    linkText: "Add to calendar",
-    href: "#"
+      { src: "../media/icons/uv_icon.jpg", alt: "Image Failed to Load" }
+    ]
   }
 ];
+
 
 const listEl = document.getElementById("event-list");
 const detailEl = document.getElementById("event-detail");
@@ -21,9 +18,10 @@ const detailEl = document.getElementById("event-detail");
 const today = new Date();
 today.setHours(0, 0, 0, 0);
 
-
+// "2026-10-24" -> a Date at local midnight (avoids time zone shifts)
 const parse = (iso) => new Date(iso + "T00:00:00");
 
+// make an element with a class and optional text
 function el(tag, className, text) {
   const node = document.createElement(tag);
   if (className) node.className = className;
@@ -31,10 +29,10 @@ function el(tag, className, text) {
   return node;
 }
 
-
+// newest first
 events.sort((a, b) => b.date.localeCompare(a.date));
 
-
+// a thin "Today" line marks where the current date falls in the list
 function nowLine() {
   const li = el("li", "now-line");
   li.append(el("span", "now-label", "Today"));
@@ -43,7 +41,8 @@ function nowLine() {
 
 function renderList() {
   listEl.innerHTML = "";
-
+  // newest events come first, so the line goes just before the first past event.
+  // An event happening today counts as not yet past, so the line sits below it.
   let lineDone = false;
   events.forEach((ev) => {
     const d = parse(ev.date);
@@ -63,21 +62,18 @@ function renderList() {
       el("span", "event-day", String(d.getDate()))
     );
 
-    const text = el("span");
-    text.append(el("span", "event-name", ev.title), el("span", "event-where", ev.location));
-
-    button.append(badge, text);
+    button.append(badge, el("span", "event-name", ev.title));
 
     const li = el("li");
     li.append(button);
     listEl.append(li);
   });
 
-
+  // every event is still ahead of us, so the line goes at the bottom
   if (!lineDone) listEl.append(nowLine());
 }
 
-
+// one photo or video element
 function mediaItem(m) {
   if (m.type === "video") {
     const v = el("video", "event-media__item");
@@ -95,7 +91,7 @@ function mediaItem(m) {
   return img;
 }
 
-
+// the full-size viewer: a <dialog> gives us Esc-to-close and focus trapping for free
 const lightbox = (function () {
   const dlg = el("dialog", "lightbox");
   dlg.setAttribute("aria-label", "Photo viewer");
@@ -117,7 +113,7 @@ const lightbox = (function () {
   dlg.append(img, caption, count, prevBtn, nextBtn, closeBtn);
   document.body.append(dlg);
 
-  let items = []; 
+  let items = [];   // [{ m: the photo, i: its position in the carousel }]
   let pos = 0;
   let onClose = null;
 
@@ -139,7 +135,7 @@ const lightbox = (function () {
   prevBtn.addEventListener("click", () => step(-1));
   nextBtn.addEventListener("click", () => step(1));
   closeBtn.addEventListener("click", () => dlg.close());
-
+  // clicking the dark area around the photo closes it
   dlg.addEventListener("click", (e) => {
     if (!e.target.closest("img, button, p")) dlg.close();
   });
@@ -149,7 +145,7 @@ const lightbox = (function () {
   });
   dlg.addEventListener("close", () => {
     document.documentElement.style.overflow = "";
-    if (onClose) onClose(items[pos].i); 
+    if (onClose) onClose(items[pos].i);   // carousel jumps to the photo you ended on
   });
 
   return {
@@ -157,17 +153,18 @@ const lightbox = (function () {
       items = list;
       pos = start;
       onClose = done;
-      if (typeof dlg.showModal !== "function") { 
+      if (typeof dlg.showModal !== "function") {   // very old browsers: open the file itself
         window.open(items[pos].m.src, "_blank");
         return;
       }
       render();
-      document.documentElement.style.overflow = "hidden"; 
+      document.documentElement.style.overflow = "hidden";   // stop the page scrolling behind it
       dlg.showModal();
     }
   };
 })();
 
+// the carousel: arrows, dots, swipe, and click-to-enlarge
 function buildCarousel(media, label) {
   const figure = el("figure", "event-media");
   const root = el("div", "carousel");
@@ -231,12 +228,12 @@ function buildCarousel(media, label) {
     root.append(prev, next, dotBar);
   }
 
-
+  // move to slide i (wraps around at both ends)
   function go(i) {
     index = (i + media.length) % media.length;
     track.style.transform = "translateX(" + (-100 * index) + "%)";
     slides.forEach((slide, n) => {
-      slide.inert = n !== index;
+      slide.inert = n !== index;                       // off-screen slides can't be tabbed to
       slide.setAttribute("aria-hidden", n !== index ? "true" : "false");
       const video = slide.querySelector("video");
       if (video && n !== index) video.pause();
@@ -246,10 +243,11 @@ function buildCarousel(media, label) {
     caption.hidden = !media[index].caption;
   }
 
+  // swipe left or right on touch screens (or drag with a mouse)
   let startX = null;
   let swiped = false;
   viewport.addEventListener("pointerdown", (e) => {
-    if (e.target.closest("video")) return; 
+    if (e.target.closest("video")) return;   // let video controls work normally
     startX = e.clientX;
     swiped = false;
   });
@@ -263,12 +261,12 @@ function buildCarousel(media, label) {
     }
   });
   viewport.addEventListener("pointercancel", () => { startX = null; });
-
+  // a swipe should not also count as a click that opens the big photo
   viewport.addEventListener("click", (e) => {
     if (swiped) { e.stopPropagation(); e.preventDefault(); swiped = false; }
   }, true);
 
-
+  // left and right arrow keys
   root.addEventListener("keydown", (e) => {
     if (e.target.closest("video") || media.length < 2) return;
     if (e.key === "ArrowLeft") go(index - 1);
@@ -279,7 +277,6 @@ function buildCarousel(media, label) {
   go(0);
   return figure;
 }
-
 
 function select(id, scroll) {
   const ev = events.find((e) => e.id === id) || events[0];
@@ -307,7 +304,8 @@ function select(id, scroll) {
     ["Time", ev.time],
     ["Where", ev.location]
   ];
-  rows.forEach(([label, value]) => {
+  // time and location are optional, so skip any that are missing
+  rows.filter(([, value]) => value).forEach(([label, value]) => {
     const group = el("div");
     group.append(el("dt", "", label), el("dd", "", value));
     meta.append(group);
@@ -316,20 +314,13 @@ function select(id, scroll) {
 
   [].concat(ev.description || []).forEach((p) => body.append(el("p", "", p)));
 
-  if (ev.href) {
-    const link = el("a", "event-button", ev.linkText || "Learn more");
-    link.href = ev.href;
-    body.append(link);
-  }
-
   detailEl.append(body);
 
-
+  // on phones the details sit below the list, so scroll down to them
   if (scroll && window.matchMedia("(max-width: 48rem)").matches) {
     detailEl.scrollIntoView({ behavior: "smooth", block: "start" });
   }
 }
-
 
 function idFromHash() {
   return decodeURIComponent(location.hash.slice(1));
@@ -342,18 +333,17 @@ listEl.addEventListener("click", (e) => {
   try { history.pushState(null, "", "#" + button.dataset.id); } catch (err) {}
 });
 
-
+// back/forward buttons and manually edited links
 function selectFromUrl() {
   const id = idFromHash();
-  if (events.some((e) => e.id === id)) select(id, false);
+  if (events.some((e) => e.id === id)) select(id, false);   // ignore other # links
 }
 window.addEventListener("popstate", selectFromUrl);
 window.addEventListener("hashchange", selectFromUrl);
 
-
 renderList();
 const fromUrl = events.find((e) => e.id === idFromHash());
-
+// the list runs newest-first, so the soonest upcoming event is the last one still ahead of today
 const upcoming = events.filter((e) => parse(e.date) >= today);
 const nextUp = upcoming.length ? upcoming[upcoming.length - 1] : events[0];
 select((fromUrl || nextUp).id, false);
