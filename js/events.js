@@ -1,67 +1,14 @@
 
 const events = [
   {
-    id: "open-house",
-    title: "Open House",
-    date: "2026-09-12",
-    time: "10:00 AM - 1:00 PM",
-    location: "Community Center, Main Hall",
-    description: "Our first open house of the year. Visitors toured the space, met the team, and tried a few activities. Thank you to everyone who came.",
-    media: [
-      { src: "../images/events/open-house-1.svg", alt: "Placeholder photo of guests at the open house", caption: "Guests arriving at the main hall" },
-      { src: "../images/events/open-house-2.svg", alt: "Placeholder photo of a tour" },
-      { src: "../images/events/open-house-3.svg", alt: "Placeholder photo of the activity tables" }
-    ],
-    linkText: "View all photos",
-    href: "#"
-  },
-  {
-    id: "intro-workshop",
-    title: "Intro Workshop",
-    date: "2026-10-24",
-    time: "2:00 PM - 4:00 PM",
-    location: "Room 204, Library Annex",
-    description: "A hands-on session for beginners. No experience is needed, and all materials are provided. Space is limited, so please register ahead of time.",
-    media: [
-      { src: "../images/events/intro-workshop-1.svg", alt: "Placeholder photo of the workshop room" },
-      { src: "../images/events/intro-workshop-2.svg", alt: "Placeholder photo of the materials" }
-    ],
-    linkText: "Register",
-    href: "#"
-  },
-  {
-    id: "fundraiser",
-    title: "Community Fundraiser",
-    date: "2026-11-14",
-    time: "6:00 PM - 9:00 PM",
-    location: "Riverside Hall",
-    description: "An evening of food, music, and a silent auction. All proceeds support next year's programs. Tickets include dinner, and children under 12 attend free.",
-    media: [
-      { src: "../images/events/fundraiser-1.svg", alt: "Placeholder photo of the fundraiser hall" }
-    ],
-    linkText: "Get tickets",
-    href: "#"
-  },
-  {
-    id: "volunteer-training",
-    title: "Volunteer Training",
-    date: "2027-01-23",
-    time: "9:30 AM - 12:00 PM",
-    location: "Online (link sent after sign-up)",
-    description: "Learn how our programs run and where help is needed most. This session is required for new volunteers.",
-    media: [],
-    linkText: "Sign up",
-    href: "#"
-  },
-  {
-    id: "annual-meeting",
-    title: "Annual Meeting",
-    date: "2027-03-06",
+    id: "year-kickoff",
+    title: "Project Unveiling Scars",
+    date: "2026-10-06",
     time: "11:00 AM - 12:30 PM",
     location: "Community Center, Main Hall",
     description: "A look back at the year, a financial update, and an open question period. Everyone is welcome.",
     media: [
-      { src: "../images/events/annual-meeting-1.svg", alt: "Placeholder photo of last year's meeting" }
+      { src: "../media/uv_icon.jpg", alt: "Placeholder Icon" }
     ],
     linkText: "Add to calendar",
     href: "#"
