@@ -12,7 +12,6 @@
   margin: 1rem 0 1rem;
 }
 
-
 .card__image {
   display: block;
   width: 100%;
@@ -28,6 +27,8 @@
 .card__body h2     { margin: 0 0 0.5rem; }
 .card__body p      { margin: 0 0 0.75rem; }
 .card__body > :last-child { margin-bottom: 0; }
+
+/* Card with the events on it */
 
 .label {
   margin: 0 0 0.5rem;
@@ -83,6 +84,24 @@
 .more-link:hover {
   text-decoration: underline;
 }
+
+
+.card-grid .card { /* Gotta make sure the links are aligned */
+  display: flex;
+  flex-direction: column;
+}
+
+.card-grid .card__body {
+  flex: 1;                    
+  display: flex;
+  flex-direction: column;
+}
+
+.card-grid .more-link {
+  margin-top: auto;          
+  align-self: flex-start;    
+}
+
 
 /* Partners */
 
