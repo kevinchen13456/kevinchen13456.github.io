@@ -49,7 +49,7 @@
   display: flex;
   align-items: baseline;
   gap: 0.75rem;
-  min-width: 0;               /* lets the title shrink so the ellipsis works */
+  min-width: 0;              
   padding: 0.5rem 0.75rem;
   border: 1px solid var(--card-border);
   border-radius: 6px;
@@ -82,4 +82,36 @@
 
 .more-link:hover {
   text-decoration: underline;
+}
+
+/* Partners */
+
+.logo-row {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 1.5rem 2.5rem;
+}
+
+.logo-row img {
+  display: block;
+  height: 3.5rem;             /* all logos share a height; widths follow their proportions */
+  width: auto;
+  max-width: 10rem;
+  object-fit: contain;
+}
+
+.logo-row a {
+  display: block;
+  opacity: 0.85;
+  transition: opacity 0.15s ease;
+}
+
+.logo-row a:hover,
+.logo-row a:focus-visible {
+  opacity: 1;
 }
