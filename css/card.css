@@ -94,13 +94,13 @@
   flex-wrap: wrap;
   align-items: center;
   justify-content: center;
-  gap: 1.5rem 2.5rem;
+  gap: 1.5rem 6rem;
 }
 
 .logo-row img {
   display: block;
-  height: 3.5rem;             /* all logos share a height; widths follow their proportions */
-  width: auto;
+  height: auto;             /* all logos share a height; widths follow their proportions */
+  width: 6rem;
   max-width: 10rem;
   object-fit: contain;
 }
